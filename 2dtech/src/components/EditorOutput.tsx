@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { FC } from "react";
@@ -27,7 +29,7 @@ const renderers = {
 
 const EditorOutput: FC<EditorOutputProps> = ({ content }) => {
   return (
-    // @ts-expect-error
+    // @ts-ignore
     <Output
       data={content}
       style={style}
