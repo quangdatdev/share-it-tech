@@ -1,16 +1,16 @@
 "use client";
 
-import { useCustomToast } from "@/hooks/use-custom-toast";
+import { PostVoteRequest } from "@/lib/validators/vote";
 import { usePrevious } from "@mantine/hooks";
 import { VoteType } from "@prisma/client";
-import { FC, useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { toast } from "../../hooks/use-toast";
 import { Button } from "../ui/Button";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import { PostVoteRequest } from "@/lib/validators/vote";
-import axios, { AxiosError } from "axios";
-import { toast } from "@/hooks/use-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
 
 interface PostVoteClientProps {
   postId: string;
@@ -18,32 +18,33 @@ interface PostVoteClientProps {
   initialVote?: VoteType | null;
 }
 
-const PostVoteClient: FC<PostVoteClientProps> = ({
+const PostVoteClient = ({
   postId,
   initialVotesAmt,
   initialVote,
-}) => {
+}: PostVoteClientProps) => {
   const { loginToast } = useCustomToast();
-  const [votesAmt, setVoteAmt] = useState<number>(initialVotesAmt);
+  const [votesAmt, setVotesAmt] = useState<number>(initialVotesAmt);
   const [currentVote, setCurrentVote] = useState(initialVote);
   const prevVote = usePrevious(currentVote);
 
+  // ensure sync with server
   useEffect(() => {
     setCurrentVote(initialVote);
   }, [initialVote]);
 
   const { mutate: vote } = useMutation({
-    mutationFn: async (voteType: VoteType) => {
+    mutationFn: async (type: VoteType) => {
       const payload: PostVoteRequest = {
-        postId,
-        voteType,
+        voteType: type,
+        postId: postId,
       };
 
       await axios.patch("/api/subreddit/post/vote", payload);
     },
     onError: (err, voteType) => {
-      if (voteType === "UP") setVoteAmt((prev) => prev - 1);
-      else setVoteAmt((prev) => prev + 1);
+      if (voteType === "UP") setVotesAmt((prev) => prev - 1);
+      else setVotesAmt((prev) => prev + 1);
 
       // reset current vote
       setCurrentVote(prevVote);
@@ -53,28 +54,32 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
           return loginToast();
         }
       }
+
       return toast({
-        title: "Something went wrong",
-        description: "Your vote was not registered, please try again",
+        title: "Something went wrong.",
+        description: "Your vote was not registered. Please try again.",
         variant: "destructive",
       });
     },
     onMutate: (type: VoteType) => {
       if (currentVote === type) {
+        // User is voting the same way again, so remove their vote
         setCurrentVote(undefined);
-        if (type === "UP") setVoteAmt((prev) => prev - 1);
-        else if (type === "DOWN") setVoteAmt((prev) => prev + 1);
+        if (type === "UP") setVotesAmt((prev) => prev - 1);
+        else if (type === "DOWN") setVotesAmt((prev) => prev + 1);
       } else {
+        // User is voting in the opposite direction, so subtract 2
         setCurrentVote(type);
-        if (type === "UP") setVoteAmt((prev) => prev + (currentVote ? 2 : 1));
+        if (type === "UP") setVotesAmt((prev) => prev + (currentVote ? 2 : 1));
         else if (type === "DOWN")
-          setVoteAmt((prev) => prev - (currentVote ? 2 : 1));
+          setVotesAmt((prev) => prev - (currentVote ? 2 : 1));
       }
     },
   });
 
   return (
-    <div className="flex sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0">
+    <div className="flex flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0">
+      {/* upvote */}
       <Button
         onClick={() => vote("UP")}
         size="sm"
@@ -88,13 +93,18 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
         />
       </Button>
 
+      {/* score */}
       <p className="text-center py-2 font-medium text-sm text-zinc-900">
         {votesAmt}
       </p>
 
+      {/* downvote */}
       <Button
         onClick={() => vote("DOWN")}
         size="sm"
+        className={cn({
+          "text-emerald-500": currentVote === "DOWN",
+        })}
         variant="ghost"
         aria-label="downvote"
       >
