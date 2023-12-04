@@ -64,7 +64,9 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original;
       // const subredit
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const router = useRouter();
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const [unsubscribeMessage, setUnsubscribeMessage] = useState("");
 
       // Hàm này sẽ gửi yêu cầu POST khi nút "Unsubscribe" được nhấn.

@@ -9,8 +9,6 @@ interface TopicTrendProps {}
 const TopicTrend: FC<TopicTrendProps> = ({}) => {
   const router = useRouter();
   const handleTopicClick = (topic: string) => {
-    console.log("Selected topic:", topic);
-
     router.push(`/r/search/${encodeURIComponent(topic.toLowerCase())}`);
   };
 
