@@ -116,7 +116,7 @@ const Layout = async ({
                     variant: "outline",
                     className: "w-full mb-6",
                   })}
-                  href={`r/management/${slug}`}
+                  href={`management/${slug}`}
                 >
                   Management
                 </Link>
