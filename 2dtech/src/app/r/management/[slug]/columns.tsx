@@ -9,13 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { UserIdPayload } from "@/lib/validators/subreddit";
-import { useMutation } from "@tanstack/react-query";
+
 import { ColumnDef } from "@tanstack/react-table";
-import { unsubscribe } from "diagnostics_channel";
 import { ArrowUpDown, DeleteIcon, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-
 import { startTransition, useState } from "react";
 // import { User } from "@prisma/client";
 
@@ -52,11 +49,31 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "postCount",
-    header: "Total Post",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Total Post
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     header: "Action",
@@ -64,9 +81,7 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original;
       // const subredit
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const router = useRouter();
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const [unsubscribeMessage, setUnsubscribeMessage] = useState("");
 
       // Hàm này sẽ gửi yêu cầu POST khi nút "Unsubscribe" được nhấn.
