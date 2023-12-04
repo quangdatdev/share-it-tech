@@ -6,7 +6,13 @@ import { CommentRequest } from "@/lib/validators/comment";
 import { Comment, CommentVote, User } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { MessageSquare } from "lucide-react";
+import {
+  Delete,
+  DeleteIcon,
+  MessageSquare,
+  Trash,
+  Trash2Icon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -16,6 +22,7 @@ import { Button } from "./ui/Button";
 import { Label } from "./ui/Label";
 import { Textarea } from "./ui/Textarea";
 import { toast } from "@/hooks/use-toast";
+import CommentRemove from "./CommentRemove";
 
 type ExtendedComment = Comment & {
   votes: CommentVote[];
@@ -109,6 +116,10 @@ const PostComment: FC<PostCommentProps> = ({
           <MessageSquare className="h-4 w-4 mr-1.5" />
           Reply
         </Button>
+
+        {comment.authorId === session?.user.id ? (
+          <CommentRemove id={comment.id} postId={comment.postId} />
+        ) : null}
       </div>
 
       {isReplying ? (
