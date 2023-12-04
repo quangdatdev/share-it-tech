@@ -1,6 +1,6 @@
 "use client";
 
-import { Prisma, Subreddit } from "@prisma/client";
+import { Prisma, Subreddit, Post } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import debounce from "lodash.debounce";
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/Command";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { Users } from "lucide-react";
+import Link from "next/link";
 
 interface SearchBarProps {}
 
@@ -96,6 +97,13 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
               ))}
             </CommandGroup>
           ) : null}
+          <CommandGroup heading="Search Post for ">
+            <CommandItem>
+              <Link href={`/r/search/${encodeURIComponent(input)}`}>
+                {input}
+              </Link>
+            </CommandItem>
+          </CommandGroup>
         </CommandList>
       )}
     </Command>

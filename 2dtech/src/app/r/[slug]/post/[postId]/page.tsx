@@ -1,12 +1,15 @@
 import CommentsSection from "@/components/CommentsSection";
 import EditorOutput from "@/components/EditorOutput";
+import PostRemove from "@/components/PostRemove";
+
 import PostVoteServer from "@/components/post-vote/PostVoteServer";
-import { buttonVariants } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
+import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { formatTimeToNow } from "@/lib/utils";
 import { CachedPost } from "@/types/redis";
-import { Post, User, Vote } from "@prisma/client";
+import { Post, Subreddit, User, Vote } from "@prisma/client";
 import { ArrowBigDown, Loader2 } from "lucide-react";
 import { ArrowBigUp } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -22,10 +25,12 @@ export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 const page = async ({ params }: PageProps) => {
+  const session = await getAuthSession();
   const cachedPost = (await redis.hgetall(
     `post:${params.postId}`
   )) as CachedPost;
 
+  let subreddit: Subreddit | null = null;
   let post: (Post & { votes: Vote[]; author: User }) | null = null;
 
   if (!cachedPost) {
@@ -36,7 +41,12 @@ const page = async ({ params }: PageProps) => {
       include: {
         votes: true,
         author: true,
+        subreddit: true,
       },
+    });
+
+    subreddit = await db.subreddit.findFirst({
+      where: { id: post?.subredditId },
     });
   }
 
@@ -66,6 +76,7 @@ const page = async ({ params }: PageProps) => {
             Posted by u/{post?.author.username ?? cachedPost.authorUsername}{" "}
             {formatTimeToNow(new Date(post?.createdAt ?? cachedPost.createAt))}
           </p>
+
           <h1 className="text-xl font-semibold py-2 leading-6 text-gray-900">
             {post?.title ?? cachedPost.title}
           </h1>
@@ -81,6 +92,14 @@ const page = async ({ params }: PageProps) => {
             <CommentsSection postId={post?.id ?? cachedPost.id} />
           </Suspense>
         </div>
+        {post?.authorId === session?.user.id ? (
+          <div className="">
+            <PostRemove
+              postId={post?.id ?? cachedPost.id}
+              subredditName={subreddit?.name ?? ""}
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );

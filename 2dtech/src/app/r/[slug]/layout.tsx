@@ -110,6 +110,17 @@ const Layout = async ({
               >
                 Create Post
               </Link>
+              {subreddit.creatorId === session?.user?.id ? (
+                <Link
+                  className={buttonVariants({
+                    variant: "outline",
+                    className: "w-full mb-6",
+                  })}
+                  href={`r/management/${slug}`}
+                >
+                  Management
+                </Link>
+              ) : null}
             </dl>
           </div>
         </div>
