@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/Table";
 import { Button } from "./ui/Button";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/Input";
 
 interface DataTableProps<TData, TValue> {
