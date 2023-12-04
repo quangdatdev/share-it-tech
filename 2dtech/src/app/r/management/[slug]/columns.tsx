@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/DropdownMenu";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, DeleteIcon, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { startTransition, useState } from "react";
 // import { User } from "@prisma/client";

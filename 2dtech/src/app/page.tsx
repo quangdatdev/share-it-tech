@@ -2,9 +2,9 @@ import CustomFeed from "@/components/CustomFeed";
 import GeneralFeed from "@/components/GeneralFeed";
 import TopicTrend from "@/components/TopicTrend";
 
-import { Button, buttonVariants } from "@/components/ui/Button";
+import { buttonVariants } from "@/components/ui/Button";
 import { getAuthSession } from "@/lib/auth";
-import { CornerDownRightIcon, FlameIcon, HomeIcon } from "lucide-react";
+import { FlameIcon, HomeIcon } from "lucide-react";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
