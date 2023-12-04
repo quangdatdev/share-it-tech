@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Icons } from "./Icons";
 import UserAuthForm from "./UserAuthForm";
+import { Input } from "./ui/Input";
+import { Button } from "./ui/Button";
 
 const SignIn = () => {
   return (
@@ -12,6 +14,14 @@ const SignIn = () => {
           By Continuing, you are setting up a 2DTECH account and agree to our
           User Agreement and Privacy Policy
         </p>
+
+        <Input placeholder="Enter phone number or email" className="pl-6" />
+        <Input placeholder="Password" type="password" className="pl-6" />
+        <br></br>
+        <Button type="submit" className="w-full">
+          Sign In
+        </Button>
+        <h3>___________ OR ___________</h3>
 
         {/* sign up form  */}
 
