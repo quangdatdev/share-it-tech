@@ -25,7 +25,7 @@ const page = async () => {
         comments: true,
         subreddit: true,
       },
-      take: INFINITE_SCROLL_PAGINATION_RESULTS,
+      // take: INFINITE_SCROLL_PAGINATION_RESULTS,
     });
     // const {data: posts} = await axios.get(`/api/posts/find?q=${slug}`);
     // console.log(`/api/posts/find?q=${slug}`);
