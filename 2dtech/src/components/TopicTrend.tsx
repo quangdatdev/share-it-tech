@@ -12,7 +12,7 @@ const TopicTrend: FC<TopicTrendProps> = ({}) => {
     router.push(`/r/search/${encodeURIComponent(topic.toLowerCase())}`);
   };
 
-  const topics = ["Java", "ReactJs", "Python", "Post"];
+  const topics = ["Java", "ReactJs", "Python", "NextJS", "JavaScript"];
 
   return (
     <div className="flex flex-col gap-y-2">
