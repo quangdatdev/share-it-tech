@@ -135,7 +135,7 @@ export const columns: ColumnDef<User>[] = [
               Copy user ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
+            {/* <DropdownMenuItem>View customer</DropdownMenuItem> */}
             <DropdownMenuItem
               onClick={() => handleUnsubscribe(user.subredit, user.id)}
             >
