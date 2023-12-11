@@ -15,10 +15,10 @@ interface PostProps {
     author: User;
     votes: Vote[];
   };
-  votesAmt?: number;
+  votesAmt: number;
   subredditName: string;
   currentVote?: PartialVote;
-  commentAmt?: number;
+  commentAmt: number;
 }
 
 const Post: FC<PostProps> = ({
