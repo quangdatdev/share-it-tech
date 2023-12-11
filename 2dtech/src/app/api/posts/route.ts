@@ -24,16 +24,18 @@ export async function GET(req: Request) {
     );
   }
   try {
-    const { limit, page, subredditName } = z
+    const { limit, page, subredditName, flag } = z
       .object({
         limit: z.string(),
         page: z.string(),
         subredditName: z.string().nullish().optional(),
+        flag: z.string().nullish().optional(),
       })
       .parse({
         subredditName: url.searchParams.get("subredditName"),
         limit: url.searchParams.get("limit"),
         page: url.searchParams.get("page"),
+        flag: url.searchParams.get("flag"),
       });
 
     let whereClause = {};
@@ -43,6 +45,7 @@ export async function GET(req: Request) {
         subreddit: {
           name: subredditName,
         },
+        flag: flag,
       };
     } else if (session) {
       whereClause = {
@@ -51,8 +54,13 @@ export async function GET(req: Request) {
             in: followedCommunitiesIds,
           },
         },
+        flag:flag,
       };
     }
+    // if (flag) {
+    //   // Kiểm tra giá trị của flag và thêm vào whereClause nếu cần thiết
+    //   whereClause['flag'] = flag;
+    // }
 
     const posts = await db.post.findMany({
       take: parseInt(limit),
@@ -68,6 +76,7 @@ export async function GET(req: Request) {
       },
       where: whereClause,
     });
+    // console.log("Where cluase: ",whereClause);
 
     return new Response(JSON.stringify(posts));
   } catch (error) {

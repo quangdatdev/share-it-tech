@@ -54,9 +54,9 @@ const page = async ({ params }: PageProps) => {
   return (
     <div>
       <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between">
-        <Suspense fallback={<PostVoteShell />}>
+         <Suspense fallback={<PostVoteShell />}> 
           {/* @ts-expect-error server component */}
-          <PostVoteServer
+           <PostVoteServer
             postId={post?.id ?? cachedPost.id}
             getData={async () => {
               return await db.post.findUnique({
@@ -69,7 +69,7 @@ const page = async ({ params }: PageProps) => {
               });
             }}
           />
-        </Suspense>
+        </Suspense> 
 
         <div className="sm:w-0 w-full flex-1 bg-white p-4 rounded-sm ">
           <p className="max-h-40 mt-1 truncate text-xs text-gray-500">

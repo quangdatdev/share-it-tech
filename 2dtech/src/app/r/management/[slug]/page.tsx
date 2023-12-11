@@ -70,7 +70,7 @@ const page = async ({ params }: PageProps) => {
       return (
         <>
           <h1 className="font-bold text-3xl md:text-4xl h-14">
-            No articles found related to `{slug}`
+            No members found related to `{slug}`
           </h1>
         </>
       );

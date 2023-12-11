@@ -83,6 +83,7 @@ const Editor: FC<EditorProps> = ({ subredditId }) => {
               },
             },
           },
+          
           list: List,
           code: Code,
           inlineCode: InlineCode,

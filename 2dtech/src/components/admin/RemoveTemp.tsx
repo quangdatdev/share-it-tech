@@ -1,6 +1,6 @@
 "use client";
 import { FC, startTransition } from "react";
-import { Button } from "./ui/Button";
+import { Button } from "../ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useCustomToast } from "@/hooks/use-custom-toast";
@@ -9,12 +9,12 @@ import { toast } from "@/hooks/use-toast";
 import { PostDeleteRequest } from "@/lib/validators/postid";
 import { Trash2Icon } from "lucide-react";
 
-interface PostRemoveProps {
+interface RemoveTempProps {
   postId: string;
   subredditName?: string;
 }
 
-const PostRemove: FC<PostRemoveProps> = ({ postId, subredditName }) => {
+const RemoveTemp: FC<RemoveTempProps> = ({ postId, subredditName }) => {
   const { loginToast } = useCustomToast();
   const router = useRouter();
   const { mutate: removePost, isLoading: isRemoveLoading } = useMutation({
@@ -41,8 +41,8 @@ const PostRemove: FC<PostRemoveProps> = ({ postId, subredditName }) => {
     },
     onSuccess: () => {
       startTransition(() => {
-        // router.refresh();
-        router.push(`/r/${subredditName}`);
+        router.refresh();
+        // router.push(`/r/${subredditName}`);
       });
       return toast({
         title: "Removed",
@@ -57,7 +57,8 @@ const PostRemove: FC<PostRemoveProps> = ({ postId, subredditName }) => {
         <Button
           type="submit"
           className=""
-          variant="outline"
+          variant="ghost"
+          size="xs"
           isLoading={isRemoveLoading}
           onClick={() => removePost()}
         >
@@ -68,4 +69,4 @@ const PostRemove: FC<PostRemoveProps> = ({ postId, subredditName }) => {
   );
 };
 
-export default PostRemove;
+export default RemoveTemp;

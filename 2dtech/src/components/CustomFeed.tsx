@@ -22,6 +22,7 @@ const CustomFeed = async () => {
 
   const posts = await db.post.findMany({
     where: {
+      flag: "ok",
       subreddit: {
         name: {
           in: followedCommunities.map((sub) => sub.subreddit.name),
@@ -39,8 +40,9 @@ const CustomFeed = async () => {
     },
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
+  console.log(posts);
 
-  return <PostFeed initialPosts={posts} />;
+  return <PostFeed initialPosts={posts} flag="ok"/>;
 };
 
 export default CustomFeed;
