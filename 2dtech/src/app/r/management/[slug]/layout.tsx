@@ -34,7 +34,6 @@ const Layout = async ({
     },
   });
 
- 
   const postTotal = subreddit?.posts.length;
 
   if (!subreddit) return notFound();
@@ -48,16 +47,22 @@ const Layout = async ({
   });
 
   const postTemp = await db.post.count({
-    where:{
-      flag:null,
-    }
-  })
+    where: {
+      flag: null,
+      subreddit: {
+        name: slug,
+      },
+    },
+  });
 
   const postOk = await db.post.count({
-    where:{
-      flag:'ok',
-    }
-  })
+    where: {
+      flag: "ok",
+      subreddit: {
+        name: slug,
+      },
+    },
+  });
 
   return (
     <div className="sm:container max-w-7xl mx-auto h-full pt-12">
@@ -107,7 +112,7 @@ const Layout = async ({
                   <div className="text-gray-900">{postOk}</div>
                 </dd>
               </div>
-               <Link
+              <Link
                 className={buttonVariants({
                   variant: "outline",
                   className: "w-full mb-6",
@@ -116,7 +121,6 @@ const Layout = async ({
               >
                 Temp Post
               </Link>
-              
             </dl>
           </div>
         </div>
