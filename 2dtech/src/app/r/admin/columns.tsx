@@ -17,8 +17,8 @@ import {
 export type Subbredit = {
   id: string;
   name: string;
-  creatorId: string | null;
-  createdAt: string;
+  creatorId: string;
+  createdAt: Date;
   postCount: number;
   member: number;
 };

@@ -19,17 +19,23 @@ async function getData(): Promise<Subbredit[]> {
           subredditId: sub.id,
         },
       });
+      const member = await db.subscription.count({
+        where: {
+          subredditId: sub.id,
+        },
+      });
+      console.log("member: ", member);
 
       return {
-        id: sub.id,
-        name: sub.name,
-        createdAt: sub.createdAt,
-        creatorId: sub.Creator?.email,
+        id: sub.id.toString() || "",
+        name: sub.name || "",
+        createdAt: sub.createdAt || "",
+        creatorId: sub.Creator?.email || "",
         postCount,
+        member,
       };
     })
   );
-  console.log("data: ", data);
 
   return data;
 }
