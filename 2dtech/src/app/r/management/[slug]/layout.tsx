@@ -101,7 +101,7 @@ const Layout = async ({
                 </dd>
               </div>
               <div className="flex justify-between gap-x-4 py-3">
-                <dt className="text-gray-500">Post Temp</dt>
+                <dt className="text-gray-500">Post Waiting</dt>
                 <dd className="flex items-start gap-x-2">
                   <div className="text-gray-900">{postTemp}</div>
                 </dd>
@@ -119,7 +119,7 @@ const Layout = async ({
                 })}
                 href={`${slug}/post/`}
               >
-                Temp Post
+                Post Waiting
               </Link>
             </dl>
           </div>
