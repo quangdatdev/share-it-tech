@@ -18,6 +18,7 @@ const page = async ({ params }: PageProps) => {
         title: {
           contains: slug,
         },
+        flag: "ok",
       },
       orderBy: {
         createdAt: "desc",
